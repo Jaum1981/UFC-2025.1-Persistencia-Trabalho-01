@@ -96,6 +96,8 @@ def update_movie(movie_id: int, updated_movie: Movie):
     for index, movie in enumerate(movies):
         if movie.id == movie_id:
             movies[index] = updated_movie
+            if updated_movie.id != movie_id:
+                raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot change movie ID")
             write_movies_csv(movies)
             return updated_movie
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
