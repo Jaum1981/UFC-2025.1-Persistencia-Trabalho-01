@@ -90,6 +90,27 @@ def create_movie(movie: Movie):
     write_movies_csv(movies)
     return movie
 
+@app.put("/movies/{movie_id}", response_model=Movie)
+def update_movie(movie_id: int, updated_movie: Movie):
+    movies = read_movies_csv()
+    for index, movie in enumerate(movies):
+        if movie.id == movie_id:
+            movies[index] = updated_movie
+            write_movies_csv(movies)
+            return updated_movie
+    raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
+
+@app.delete("/movies/{movie_id}", status_code=HTTPStatus.NO_CONTENT)
+def delete_movie(movie_id: int):
+    movies = read_movies_csv()
+    for movie in movies:
+        if movie.id == movie_id:
+            movies.remove(movie)
+            write_movies_csv(movies)
+            return
+    raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
+
+
 #estrura para verificar rating(validar)
 #deixar id gerando automaticamente
 #validar se o filme existe antes de criar a sessão
