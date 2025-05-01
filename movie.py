@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
 from http import HTTPStatus
-from typing import Union
 from pydantic import BaseModel
 import os
 # 6.  Cinema
@@ -11,8 +10,6 @@ import os
 
 app = FastAPI()
 MOVIE_CSV_FILE = 'movies.csv'
-SESSION_CSV_FILE = 'sessions.csv'
-TICKET_CSV_FILE = 'tickets.csv'
 
 #Filme (id, título, gênero, duração, ano\lançamento, classificação)
 class Movie(BaseModel):
@@ -22,26 +19,6 @@ class Movie(BaseModel):
     duration: int  # in minutes
     release_year: int
     rating: str  # Livre, 10, 12, 14, 16 e 18 anos)
-
-#Sessão (id, filme\id, sala, data\hora, preço\ingresso, lugares\disponíveis)
-class Session(BaseModel):
-    id: int
-    movie: Movie
-    room: str
-    date_time: str  # ISO 8601 format (exemplo:  2020-07-10 15:00:00.000, representa 10 de julho de 2020 às 15:00:00)
-    ticket_price: float
-    available_seats: List #seria lugares disponiveis
-
-
-#Ingresso (id, sessão\id, cliente\id, poltrona, data\compra, tipo)
-class Ticket(BaseModel):
-    id: int
-    session: Session
-    client_id: int
-    seat: str # não sei como fica ainda, tem que ver a questão do available_seats mas se for string seria tipo F8
-    purchase_date: str #msm formato do date_time
-    ticket_type: str # Normal, meia-entrada, promocional
-
 
 def read_movies_csv()->List[Movie]:
     movies: List[Movie] = []

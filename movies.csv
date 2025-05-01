@@ -1,6 +1,11 @@
-id,title,genre,duration,release_year,rating
-1,The Shawshank Redemption,Drama,142,1994,R
-2,The Godfather,Crime,175,1972,R
-3,The Dark Knight,Action,152,2008,PG-13
-4,Pulp Fiction,Crime,154,1994,R
-5,The Lord of the Rings: The Fellowship of the Ring,Fantasy,178,2001,PG-13
+MovieID,Title,Genre,Duration,ReleaseYear,Rating
+201,Deadpool & Wolverine,"Action;Adventure;Comedy;Sci-Fi",128,2024,16
+202,Dune: Part Two,"Sci-Fi;Action",166,2024,12
+203,Furiosa: A Mad Max Saga,Action,148,2024,16
+204,Joker: Folie à Deux,"Drama;Musical;Thriller",138,2024,18
+205,Alien: Romulus,"Sci-Fi;Horror",119,2024,18
+206,The Substance,Body Horror,141,2024,18
+207,The Wild Robot,"Animation;Adventure",95,2025,L
+208,Nosferatu: A Symphony of Horror,Horror,81,1922,14
+209,The Brutalist,Drama,215,2024,16
+210,Ghostlight,"Comedy;Drama",115,2024,12
