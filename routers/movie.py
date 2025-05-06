@@ -1,6 +1,6 @@
 import os
 import zipfile
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Movie
@@ -91,3 +91,29 @@ def get_movies_zip():
     with zipfile.ZipFile(ZIP_FILE, 'w') as zipf:
         zipf.write(MOVIE_CSV_FILE, os.path.basename(MOVIE_CSV_FILE))
         return FileResponse(ZIP_FILE, media_type='application/zip', filename=os.path.basename(ZIP_FILE))
+    
+@router.get("/movies-per-atributes", response_model=List[Movie])
+def get_movies_by_atribute(field: str = Query(..., description="Coluna para busca (e.g. id, title, genre)"),
+                           value: str = Query(..., description="Valor a ser buscado na coluna")):
+    movies = read_movies_csv()
+    if field not in Movie.__annotations__:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Invalid field")
+    if field == "id":
+        value = int(value)
+    if field == "duration_minutes":
+        value = int(value)
+    if field == "genre":
+        value = str(value)
+    if field == "director":
+        value = str(value)
+    if field == "title":
+        value = str(value)
+    if field == "release_year":
+        value = int(value)
+    if field == "rating":
+        value = str(value)
+    filtered_movies = [movie for movie in movies if getattr(movie, field) == value]
+    if not filtered_movies:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No movies found with the given attribute")
+    return filtered_movies
+    
