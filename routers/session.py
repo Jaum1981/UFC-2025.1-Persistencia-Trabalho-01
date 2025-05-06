@@ -1,12 +1,16 @@
 import os
+import json
+import zipfile
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
+from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Session
 from typing import List
 
 router = APIRouter()
 SESSION_CSV_FILE = 'data/session.csv'
+SESSION_ZIP_FILE = 'data/session.zip'
 
 # Utility functions
 
@@ -82,7 +86,15 @@ def delete_session(session_id: int):
             return
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Session not found")
 
-#estrura para verificar rating(validar)
-#deixar id gerando automaticamente
-#validar se o filme existe antes de criar a sessão
-#validar se o filme deletado existe na sessão
+@router.get("/sessions-count")
+def get_sessions_count():
+    sessions = read_session_csv()
+    return  {
+        "quantidade": len(sessions)
+    }
+
+@router.get("/sessions-zip")
+def get_sessions_zip():
+    with zipfile.ZipFile(SESSION_ZIP_FILE, 'w') as zipf:
+        zipf.write(SESSION_CSV_FILE, os.path.basename(SESSION_CSV_FILE))
+        return FileResponse(SESSION_ZIP_FILE, media_type="application/zip", filename=os.path.basename(SESSION_ZIP_FILE))
