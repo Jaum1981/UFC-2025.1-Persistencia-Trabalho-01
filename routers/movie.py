@@ -1,11 +1,14 @@
 import os
+import zipfile
 from fastapi import APIRouter, HTTPException
+from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Movie
 from typing import List
 
 router = APIRouter()
 MOVIE_CSV_FILE = 'data/movies.csv'
+ZIP_FILE = 'data/movies.zip'
 
 def read_movies_csv() -> List[Movie]:
     movies: List[Movie] = []
@@ -72,14 +75,19 @@ def update_movie(movie_id: int, updated_movie: Movie):
 def delete_movie(movie_id: int):
     movies = read_movies_csv()
     for movie in movies:
-        if movie.id == movie_id:
+        if movie.id == movie_id: 
             movies.remove(movie)
             write_movies_csv(movies)
             return
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
 
+@router.get("/movies-count", response_model=int)
+def get_movies_count():
+    movies = read_movies_csv()
+    return len(movies)
 
-#estrura para verificar rating(validar)
-#deixar id gerando automaticamente
-#validar se o filme existe antes de criar a sessão
-#validar se o filme deletado existe na sessão
+@router.get("/movies-zip")
+def get_movies_zip():
+    with zipfile.ZipFile(ZIP_FILE, 'w') as zipf:
+        zipf.write(MOVIE_CSV_FILE, os.path.basename(MOVIE_CSV_FILE))
+        return FileResponse(ZIP_FILE, media_type='application/zip', filename=os.path.basename(ZIP_FILE))
