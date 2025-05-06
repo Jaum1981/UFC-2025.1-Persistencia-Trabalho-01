@@ -8,7 +8,7 @@ from typing import List
 
 router = APIRouter()
 MOVIE_CSV_FILE = 'data/movies.csv'
-ZIP_FILE = 'data/movies.zip'
+MOVIE_ZIP_FILE = 'data/movies.zip'
 
 def read_movies_csv() -> List[Movie]:
     movies: List[Movie] = []
@@ -81,10 +81,12 @@ def delete_movie(movie_id: int):
             return
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
 
-@router.get("/movies-count", response_model=int)
+@router.get("/movies-count")
 def get_movies_count():
     movies = read_movies_csv()
-    return len(movies)
+    return  {
+        "quantidade": len(movies)
+    }
 
 @router.get("/movies-zip")
 def get_movies_zip():
