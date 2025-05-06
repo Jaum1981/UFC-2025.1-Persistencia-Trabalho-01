@@ -2,7 +2,7 @@ import os
 import json
 import zipfile
 from datetime import datetime
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Session
@@ -98,3 +98,46 @@ def get_sessions_zip():
     with zipfile.ZipFile(SESSION_ZIP_FILE, 'w') as zipf:
         zipf.write(SESSION_CSV_FILE, os.path.basename(SESSION_CSV_FILE))
         return FileResponse(SESSION_ZIP_FILE, media_type="application/zip", filename=os.path.basename(SESSION_ZIP_FILE))
+
+@router.get("/sessions-by-attributes", response_model=List[Session])
+def get_sessions_by_attribute(
+    field: str = Query(..., description="Coluna para busca (e.g. id, movie_id, start_time, room, available_seats)"),
+    value: str = Query(..., description="Valor a ser buscado na coluna")
+):
+    sessions = read_session_csv()
+    
+    if field not in Session.__annotations__:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail="Campo inválido"
+        )
+
+    try:
+        if field in ["id", "movie_id"]:
+            value = int(value)
+        elif field == "start_time":
+            value = datetime.fromisoformat(value)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail=f"Valor inválido para o campo {field}: {e}"
+        )
+
+    filtered = []
+    for session in sessions:
+        session_value = getattr(session, field)
+        
+        if field == "available_seats":
+            if value in session_value:
+                filtered.append(session)
+        else:
+            if session_value == value:
+                filtered.append(session)
+
+    if not filtered:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Nenhuma sessão encontrada com o atributo especificado"
+        )
+    
+    return filtered
