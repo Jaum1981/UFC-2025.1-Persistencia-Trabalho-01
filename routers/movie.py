@@ -98,21 +98,25 @@ def get_movies_by_atribute(field: str = Query(..., description="Coluna para busc
     movies = read_movies_csv()
     if field not in Movie.__annotations__:
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Invalid field")
+    
     if field == "id":
         value = int(value)
-    if field == "duration_minutes":
+    elif field == "duration_minutes":
         value = int(value)
-    if field == "genre":
-        value = str(value)
-    if field == "director":
-        value = str(value)
-    if field == "title":
-        value = str(value)
-    if field == "release_year":
+    elif field == "release_year":
         value = int(value)
-    if field == "rating":
-        value = str(value)
-    filtered_movies = [movie for movie in movies if getattr(movie, field) == value]
+    else:
+        value = str(value)  
+    filtered_movies = []
+    for movie in movies:
+        movie_value = getattr(movie, field)
+        if field == "genre":
+            if value in movie_value.split(';'):
+                filtered_movies.append(movie)
+        else:
+            if movie_value == value:
+                filtered_movies.append(movie)
+    
     if not filtered_movies:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No movies found with the given attribute")
     return filtered_movies
