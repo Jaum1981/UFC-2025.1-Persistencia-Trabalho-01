@@ -90,9 +90,9 @@ def get_movies_count():
 
 @router.get("/movies-zip")
 def get_movies_zip():
-    with zipfile.ZipFile(ZIP_FILE, 'w') as zipf:
+    with zipfile.ZipFile(MOVIE_ZIP_FILE, 'w') as zipf:
         zipf.write(MOVIE_CSV_FILE, os.path.basename(MOVIE_CSV_FILE))
-        return FileResponse(ZIP_FILE, media_type='application/zip', filename=os.path.basename(ZIP_FILE))
+        return FileResponse(MOVIE_ZIP_FILE, media_type='application/zip', filename=os.path.basename(MOVIE_ZIP_FILE))
     
 @router.get("/movies-per-atributes", response_model=List[Movie])
 def get_movies_by_atribute(field: str = Query(..., description="Coluna para busca (e.g. id, title, genre)"),
@@ -122,4 +122,17 @@ def get_movies_by_atribute(field: str = Query(..., description="Coluna para busc
     if not filtered_movies:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No movies found with the given attribute")
     return filtered_movies
-    
+
+#F6 Retornar o Hash SHA256 do Arquivo CSV
+@router.get("/movies-hash")
+def get_movies_hash():
+    import hashlib
+    sha256_hash = hashlib.sha256()
+    with open(MOVIE_CSV_FILE, "rb") as f:
+        for byte_block in iter(lambda: f.read(4096), b""):
+            sha256_hash.update(byte_block)
+    return {
+        "hash": sha256_hash.hexdigest()
+    }
+
+#F7 Implementar um sistema de logs
