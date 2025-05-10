@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from routers import movie, session, ticket
+from routers.movie import movie_setup_logging
 
+
+movie_setup_logging()
 app = FastAPI()
 
 # Importando os routers
