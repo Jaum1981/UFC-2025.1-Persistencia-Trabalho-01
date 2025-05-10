@@ -1,11 +1,14 @@
 import os
-from fastapi import APIRouter, HTTPException
+import zipfile
+from fastapi import APIRouter, HTTPException, Query
+from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Movie
 from typing import List
 
 router = APIRouter()
 MOVIE_CSV_FILE = 'data/movies.csv'
+MOVIE_ZIP_FILE = 'data/movies.zip'
 
 def read_movies_csv() -> List[Movie]:
     movies: List[Movie] = []
@@ -72,14 +75,51 @@ def update_movie(movie_id: int, updated_movie: Movie):
 def delete_movie(movie_id: int):
     movies = read_movies_csv()
     for movie in movies:
-        if movie.id == movie_id:
+        if movie.id == movie_id: 
             movies.remove(movie)
             write_movies_csv(movies)
             return
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
 
+@router.get("/movies-count")
+def get_movies_count():
+    movies = read_movies_csv()
+    return  {
+        "quantidade": len(movies)
+    }
 
-#estrura para verificar rating(validar)
-#deixar id gerando automaticamente
-#validar se o filme existe antes de criar a sessão
-#validar se o filme deletado existe na sessão
+@router.get("/movies-zip")
+def get_movies_zip():
+    with zipfile.ZipFile(ZIP_FILE, 'w') as zipf:
+        zipf.write(MOVIE_CSV_FILE, os.path.basename(MOVIE_CSV_FILE))
+        return FileResponse(ZIP_FILE, media_type='application/zip', filename=os.path.basename(ZIP_FILE))
+    
+@router.get("/movies-per-atributes", response_model=List[Movie])
+def get_movies_by_atribute(field: str = Query(..., description="Coluna para busca (e.g. id, title, genre)"),
+                           value: str = Query(..., description="Valor a ser buscado na coluna")):
+    movies = read_movies_csv()
+    if field not in Movie.__annotations__:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Invalid field")
+    
+    if field == "id":
+        value = int(value)
+    elif field == "duration_minutes":
+        value = int(value)
+    elif field == "release_year":
+        value = int(value)
+    else:
+        value = str(value)  
+    filtered_movies = []
+    for movie in movies:
+        movie_value = getattr(movie, field)
+        if field == "genre":
+            if value in movie_value.split(';'):
+                filtered_movies.append(movie)
+        else:
+            if movie_value == value:
+                filtered_movies.append(movie)
+    
+    if not filtered_movies:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No movies found with the given attribute")
+    return filtered_movies
+    
