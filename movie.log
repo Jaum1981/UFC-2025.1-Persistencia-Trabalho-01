@@ -6,3 +6,5 @@
 2025-05-10 17:58:14,473 - ERROR - Movie with ID 99999 not found
 2025-05-10 17:59:00,574 - INFO - Fetching all movies
 2025-05-10 17:59:34,214 - INFO - Fetching all movies
+2025-05-11 09:45:30,986 - INFO - Converting movies CSV to XML
+2025-05-11 09:50:31,381 - INFO - Fetching all sessions

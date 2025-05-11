@@ -191,3 +191,20 @@ def get_movies_hash():
     return {
         "hash": sha256_hash.hexdigest()
     }
+
+#F8 Converter o csv para xml
+@router.get("/movies-xml")
+def get_movies_xml():
+    movie_logger.info("Converting movies CSV to XML")
+    import xml.etree.ElementTree as ET
+    movies = read_movies_csv()
+    root = ET.Element("movies")
+    for movie in movies:
+        movie_elem = ET.SubElement(root, "movie")
+        for key, value in movie.dict().items():
+            child = ET.SubElement(movie_elem, key)
+            child.text = str(value)
+    tree = ET.ElementTree(root)
+    xml_file_path = 'data/movies.xml'
+    tree.write(xml_file_path, encoding='utf-8', xml_declaration=True)
+    return FileResponse(xml_file_path, media_type='application/xml', filename=os.path.basename(xml_file_path))
