@@ -1,0 +1,11 @@
+2025-05-11 09:51:43,417 - INFO - Fetching all sessions
+2025-05-11 09:51:58,769 - INFO - Converting sessions CSV to XML
+2025-05-11 09:52:03,694 - INFO - Calculating SHA256 hash of the session CSV file
+2025-05-11 09:52:08,926 - INFO - Counting all sessions
+2025-05-11 09:52:16,941 - INFO - Fetching all sessions
+2025-05-11 09:52:25,063 - INFO - Fetching session with ID: 202
+2025-05-11 09:52:29,837 - INFO - Fetching session with ID: 999999
+2025-05-11 09:52:29,837 - ERROR - Session with ID 999999 not found
+2025-05-11 09:52:46,426 - INFO - Creating session: id=202 movie_id='string' start_time=datetime.datetime(2025, 5, 11, 12, 52, 37, 655000, tzinfo=TzInfo(UTC)) room='string' available_seats=['string']
+2025-05-11 09:52:46,427 - ERROR - Session with ID 202 already exists
+2025-05-11 09:53:02,498 - INFO - Fetching all sessions
