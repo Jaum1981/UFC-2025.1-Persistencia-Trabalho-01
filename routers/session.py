@@ -9,42 +9,11 @@ from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Session
 from typing import List
-
-def session_setup_logging(
-        default_path: str = './logs/configSession.yaml',
-        default_level: int = logging.INFO,
-        env_key: str = 'LOG_CFG'
-) -> None:
-    """
-    Carrega configurações de logging de um arquivo YAML
-    e aplica-as via logging.config.dictConfig().
-    Cria diretório de logs se necessário.
-    """
-    # Garante que o diretório exista
-    config_dir = os.path.dirname(default_path) or '.'
-    os.makedirs(config_dir, exist_ok=True)
-
-    # Sobrescreve via variável de ambiente
-    path = os.getenv(env_key, default_path)
-
-    if os.path.exists(path):
-        with open(path, 'rt', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-        logging.config.dictConfig(config)
-    else:
-        # Configuração básica caso não encontre o arquivo
-        logging.basicConfig(level=default_level,
-                            format="%(asctime)s - %(levelname)s - %(message)s",
-                            handlers=[logging.FileHandler('session.log', encoding='utf-8')])
-
-# Executa setup ao importar este módulo
-session_setup_logging()
-# Instancia o logger após configuração
-session_logger = logging.getLogger("session_logger")
+from utils.logger_config import logger
 
 router = APIRouter()
 SESSION_CSV_FILE = 'data/session.csv'
-SESSION_ZIP_FILE = 'data/session.zip'
+SESSION_ZIP_FILE = 'compressed/session.zip'
 
 # Utility functions
 
@@ -78,65 +47,65 @@ def write_session_csv(sessions):
 
 @router.get("/sessions", response_model=List[Session])
 def get_sessions():
-    session_logger.info("Fetching all sessions")
+    logger.info("Fetching all sessions")
     sessions = read_session_csv()
     return sessions
 
 @router.get("/sessions/{session_id}", response_model=Session)
 def get_session_by_id(session_id: int):
-    session_logger.info(f"Fetching session with ID: {session_id}")
+    logger.info(f"Fetching session with ID: {session_id}")
     sessions = read_session_csv()
     for session in sessions:
         if session.id == session_id:
-            session_logger.debug(f"Session found: {session}")
+            logger.debug(f"Session found: {session}")
             return session
-    session_logger.error(f"Session with ID {session_id} not found")
+    logger.error(f"Session with ID {session_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Session not found")
 
 @router.post("/sessions", response_model=Session, status_code=HTTPStatus.CREATED)
 def create_session(session: Session):
-    session_logger.info(f"Creating session: {session}")
+    logger.info(f"Creating session: {session}")
     sessions = read_session_csv()
     if any(s.id == session.id for s in sessions):
-        session_logger.error(f"Session with ID {session.id} already exists")
+        logger.error(f"Session with ID {session.id} already exists")
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="Session with this ID already exists")
     sessions.append(session)
     write_session_csv(sessions)
-    session_logger.debug(f"Session created: {session}")
+    logger.debug(f"Session created: {session}")
     return session
 
 @router.put("/sessions/{session_id}", response_model=Session)
 def update_session(session_id: int, updated_session: Session):
-    session_logger.info(f"Updating session with ID: {session_id}")
+    logger.info(f"Updating session with ID: {session_id}")
     sessions = read_session_csv()
     for index, session in enumerate(sessions):
         if session.id == session_id:
             sessions[index] = updated_session
             if updated_session.id != session_id:
-                session_logger.error(f"Cannot change session ID from {session_id} to {updated_session.id}")
+                logger.error(f"Cannot change session ID from {session_id} to {updated_session.id}")
                 raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot change session ID")
             write_session_csv(sessions)
-            session_logger.debug(f"Session updated: {updated_session}")
+            logger.debug(f"Session updated: {updated_session}")
             return updated_session
-    session_logger.error(f"Session with ID {session_id} not found")
+    logger.error(f"Session with ID {session_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Session not found")
 
 @router.delete("/sessions/{session_id}", status_code=HTTPStatus.NO_CONTENT)
 def delete_session(session_id: int):
-    session_logger.info(f"Deleting session with ID: {session_id}")
+    logger.info(f"Deleting session with ID: {session_id}")
     sessions = read_session_csv()
     for session in sessions:
         if session.id == session_id:
             sessions.remove(session)
             write_session_csv(sessions)
-            session_logger.debug(f"Session deleted: {session}")
+            logger.debug(f"Session deleted: {session}")
             return
-    session_logger.error(f"Session with ID {session_id} not found")
+    logger.error(f"Session with ID {session_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Session not found")
 
 @router.get("/sessions-count")
 def get_sessions_count():
-    session_logger.info("Counting all sessions")
+    logger.info("Counting all sessions")
     sessions = read_session_csv()
     return  {
         "quantidade": len(sessions)
@@ -144,7 +113,7 @@ def get_sessions_count():
 
 @router.get("/sessions-zip")
 def get_sessions_zip():
-    session_logger.info("Creating ZIP file of all sessions")
+    logger.info("Creating ZIP file of all sessions")
     with zipfile.ZipFile(SESSION_ZIP_FILE, 'w') as zipf:
         zipf.write(SESSION_CSV_FILE, os.path.basename(SESSION_CSV_FILE))
         return FileResponse(SESSION_ZIP_FILE, media_type="application/zip", filename=os.path.basename(SESSION_ZIP_FILE))
@@ -155,7 +124,7 @@ def get_sessions_by_attribute(
     value: str = Query(..., description="Valor a ser buscado na coluna")
 ):
     sessions = read_session_csv()
-    session_logger.info(f"Fetching sessions by attribute: {field} with value: {value}")
+    logger.info(f"Fetching sessions by attribute: {field} with value: {value}")
     
     if field not in Session.__annotations__:
         raise HTTPException(
@@ -196,20 +165,20 @@ def get_sessions_by_attribute(
 #F6 Retornar o Hash SHA256 do Arquivo CSV
 @router.get("/sessions-hash")
 def get_sessions_hash():
-    session_logger.info("Calculating SHA256 hash of the session CSV file")
+    logger.info("Calculating SHA256 hash of the session CSV file")
     import hashlib
     sha256_hash = hashlib.sha256()
     with open(SESSION_CSV_FILE, "rb") as f:
         for byte_block in iter(lambda: f.read(4096), b""):
             sha256_hash.update(byte_block)
     return {
-        "hash": sha256_hash.hexdigest()
+        "hash_sha256": sha256_hash.hexdigest()
     }
                                                                                                                                                                                                                                         
 #F8 Converter o csv para xml
 @router.get("/sessions-xml")
 def get_sessions_xml():
-    session_logger.info("Converting sessions CSV to XML")
+    logger.info("Converting sessions CSV to XML")
     import xml.etree.ElementTree as ET
     sessions = read_session_csv()
     root = ET.Element("sessions")
@@ -219,6 +188,6 @@ def get_sessions_xml():
             child = ET.SubElement(session_elem, key)
             child.text = str(value)
     tree = ET.ElementTree(root)
-    xml_file_path = 'data/sessions.xml'
+    xml_file_path = 'xml_files/sessions.xml'
     tree.write(xml_file_path, encoding='utf-8', xml_declaration=True)
     return FileResponse(xml_file_path, media_type="application/xml", filename=os.path.basename(xml_file_path))
