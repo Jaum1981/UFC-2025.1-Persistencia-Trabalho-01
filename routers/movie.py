@@ -8,7 +8,6 @@ from http import HTTPStatus
 from models.models import Movie
 from typing import List
 
-# Configuração de logging antes de instanciar o logger
 
 def movie_setup_logging(
         default_path: str = './logs/configMovie.yaml',

@@ -1,1 +1,8 @@
 2025-05-10 17:48:55,773 - INFO - Fetching all movies
+2025-05-10 17:57:40,707 - INFO - Fetching movies by attribute: genre with value: Action
+2025-05-10 17:57:53,835 - INFO - Calculating SHA256 hash of the movies CSV file
+2025-05-10 17:58:09,279 - INFO - Fetching movie with ID: 208
+2025-05-10 17:58:14,472 - INFO - Fetching movie with ID: 99999
+2025-05-10 17:58:14,473 - ERROR - Movie with ID 99999 not found
+2025-05-10 17:59:00,574 - INFO - Fetching all movies
+2025-05-10 17:59:34,214 - INFO - Fetching all movies
