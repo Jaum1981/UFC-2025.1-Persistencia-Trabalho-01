@@ -5,8 +5,9 @@
 **Prof. Francisco Victor da Silva Pinheiro**
 
 
-**Francisco Breno da Silveira (511429)**
-**João Victor Amarante Diniz (510466)**
+## Discentes
+1. Francisco Breno da Silveira (511429)
+2. João Victor Amarante Diniz (510466)
 
 ---
 
