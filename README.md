@@ -46,4 +46,50 @@ Este projeto implementa uma **API REST** usando **FastAPI** para gerenciar três
 
 ---
 
+## Estrutura do Projeto
 
+.
+├── data/            # CSVs populados
+│   ├── movie.csv
+│   ├── session.csv
+│   └── ticket.csv
+├── logs/            # Configuração e arquivos de log
+│   ├── configMovie.yaml
+│   ├── configSession.yaml
+│   └── configTicket.yaml
+├── models/          # Definições de Pydantic models
+│   ├── movie.py
+│   ├── session.py
+│   └── ticket.py
+├── routers/         # Endpoints FastAPI
+│   ├── movie.py
+│   ├── session.py
+│   └── ticket.py
+└── main.py          # Ponto de entrada onde tudo é amarrado
+
+
+---
+
+
+## Instruções de Configuração e Execução
+
+1. **Criar ambiente virtual**  
+   ```bash
+   python -m venv venv
+   ```
+2. **Ativar o ambiente**
+   ```bash
+   source/env/bin/activate
+   ```
+3. **Instalar dependências**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Iniciar o servidor**
+   ```bash
+   uvicorn main:app --reload --port 3000
+   ```
+5. **Acessar swagger**
+   ```bash
+   http://localhost:3000/docs
+   ```
