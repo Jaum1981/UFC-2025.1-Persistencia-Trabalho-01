@@ -1,100 +1,192 @@
-# Trabalho Prático 1 – API REST com FastAPI e Persistência em CSV
+## Relatório de Divisão de Atividades
 
-**Universidade Federal do Ceará – Campus Quixadá**  
-**QXD0099 – Desenvolvimento de Software para Persistência**  
-**Prof. Francisco Victor da Silva Pinheiro**
+**Projeto:** Desenvolvimento de API REST com FastAPI para Gerenciamento de Entidades com Persistência em CSV
 
----
+**Disciplina:** Desenvolvimento de Software para Persistência
 
-## Discentes
+**Data de entrega:** 13.05.2025
 
-1. Francisco Breno da Silveira (511429)  
-2. João Victor Amarante Diniz (510466)
+**Dupla:**
 
----
-
-## 📄 Descrição
-
-Este projeto implementa uma **API REST** usando **FastAPI** para gerenciar três entidades (por exemplo: Produto, Cliente e Pedido), com persistência de dados em arquivos CSV.  
-Funcionalidades adicionais incluem compactação dos CSVs em ZIP, cálculo de hash SHA-256, geração de XML, filtragem avançada e logging de todas as operações, simulando um cenário real de aplicação com maior controle e auditoria.
+* **Aluno 1:** João Victor Amarante Diniz (510466)
+* **Aluno 2:** Francisco Breno da Silveira (511429)
 
 ---
 
-## 🚀 Funcionalidades
+### 1. Introdução
 
-1. **CRUD Completo**  
-   - Create, Read, Update e Delete em cada entidade.  
-   - Atualização imediata dos respectivos arquivos CSV.
+Este projeto tem como objetivo desenvolver uma API REST utilizando o framework FastAPI para realizar o gerenciamento de três entidades: Filmes (Movies), Sessões de exibição (Sessions) e Ingressos (Tickets), como base no domínio Cinema, adotado para o desenvolvimento deste trabalho. A persistência dos dados foi feita utilizando arquivos CSV, com suporte adicional para exportação dos dados em XML, compactação em arquivos ZIP, cálculo de hash SHA256 para verificação de integridade, e filtragem por atributos.
 
-2. **Listagem de Registros**  
-   - Retorna todos os registros da entidade em JSON.
+As tecnologias utilizadas incluem:
 
-3. **Contagem de Registros**  
-   - Retorna a quantidade total de entidades cadastradas.
+* **FastAPI** para construção das rotas REST;
+* **Pydantic** para definição e validação de modelos de dados;
+* **YAML** para configurações dinâmicas dos caminhos de arquivos;
+* **logging** para rastreamento de ações e erros;
+* **Python** como linguagem base.
 
-4. **Compactação em ZIP**  
-   - Permite baixar o CSV compactado como `<entidade>.zip`.
+A aplicação está dividida em pastas organizadas por responsabilidade: `routers`, `models`, `utils`, `data`, `compressed`, e `xml_files`.
 
-5. **Filtragem por Atributos**  
-   - Parâmetros de query para filtrar por campos específicos (e.g., categoria, intervalo de preço).
-
-6. **Hash SHA-256**  
-   - Calcula e retorna o hash do CSV, garantindo a integridade dos dados.
-
-7. **Logging de Operações**  
-   - Arquivo de log registra data, hora, tipo de operação e status.
-
-8. **Exportação para XML**  
-   - Gera e disponibiliza download do `<entidade>.xml` a partir do CSV.
+**Responsável pela redação do relatório:** Francisco Breno
 
 ---
 
-## 📂 Estrutura do Projeto
+### 2. Configuração do Projeto
 
-```plaintext
-.
-├── data/            # CSVs populados
-│   ├── movie.csv
-│   ├── session.csv
-│   └── ticket.csv
-├── logs/            # Configuração e arquivos de log
-│   ├── configMovie.yaml
-│   ├── configSession.yaml
-│   └── configTicket.yaml
-├── models/          # Definições de Pydantic models
-│   ├── movie.py
-│   ├── session.py
-│   └── ticket.py
-├── routers/         # Endpoints FastAPI
-│   ├── movie.py
-│   ├── session.py
-│   └── ticket.py
-└── main.py          # Ponto de entrada onde tudo é amarrado
+#### Ambiente de Desenvolvimento
 
+O projeto é compatível com sistemas Windows, Linux e macOS. Abaixo, seguem as instruções para configuração do ambiente em todas as plataformas:
+
+**1. Criar ambiente virtual:**
+
+Windows (CMD ou PowerShell):
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+Linux/macOS:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**2. Instalar dependências:**
+
+Com o ambiente virtual ativado, execute:
+
+```bash
+pip install -r requirements.txt
+```
+
+**Conteúdo do arquivo `requirements.txt`:**
+
+```
+annotated-types==0.7.0
+anyio==4.9.0
+click==8.1.8
+colorama==0.4.6
+fastapi==0.115.12
+h11==0.16.0
+idna==3.10
+pydantic==2.11.4
+pydantic_core==2.33.2
+PyYAML==6.0.2
+sniffio==1.3.1
+starlette==0.46.2
+typing-inspection==0.4.0
+typing_extensions==4.13.2
+uvicorn==0.34.2
+```
+
+#### Estrutura de Diretórios
+
+* **routers/**: contém os arquivos de rotas (`movie.py`, `session.py`, `ticket.py`)
+* **models/**: contém os modelos Pydantic utilizados pelas rotas
+* **utils/**: configurações e utilitários como o logger e leitura do `config.yaml`
+* **data/**: arquivos `.csv` com os dados persistidos
+* **compressed/**: arquivos `.zip` gerados
+* **xml\_files/**: arquivos `.xml` gerados
+
+#### Configuração por YAML
+
+Todas as rotas utilizam um arquivo `config.yaml` para definir os caminhos dos arquivos de dados (CSV, ZIP, XML) e configurações de logging. Isso torna o projeto mais modular e fácil de manter.
+
+* **Setup do ambiente virtual e dependências**: Francisco Breno
+* **Estrutura de pastas e arquivos**: Francisco Breno
+* **Arquivo de configuração YAML**: Francisco Breno
+
+#### Execução
+
+```
+uvicorn main:app --reload --port 3000
+```
+#### Acessar documentação
+```
+http://localhost:3000/docs
 ```
 
 ---
 
+### 3. Implementação dos Models
 
-## ⚙️ Instruções de Configuração e Execução
+* **Definição de classes Pydantic** (`Movie`, `Session`, `Ticket`)
 
-1. **Criar ambiente virtual**  
-   ```bash
-   python -m venv venv
-   ```
-2. **Ativar o ambiente**
-   ```bash
-   source/env/bin/activate
-   ```
-3. **Instalar dependências**
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. **Iniciar o servidor**
-   ```bash
-   uvicorn main:app --reload --port 3000
-   ```
-5. **Acessar swagger**
-   ```bash
-   http://localhost:3000/docs
-   ```
+  * Responsável: João Victor e Francisco Breno
+
+---
+
+### 4. Leitura e Gravação de CSV
+
+* **Funções `read_*/write_*_csv` para Movies, Sessions e Tickets**
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+* **Tratamento de parsing de tipos e listas**
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+
+---
+
+### 5. Endpoints CRUD
+
+* **Movies (GET, POST, PUT, DELETE)**
+
+  * Responsável: João Victor
+* **Sessions (GET, POST, PUT, DELETE)**
+
+  * Responsável: João Victor
+* **Tickets (GET, POST, PUT, DELETE)**
+
+  * Responsável: Francisco Breno
+
+---
+
+### 6. Endpoints Auxiliares
+
+* **Contagem de registros** (`-count`)
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+* **Geração de ZIP** (`-zip`)
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+* **Cálculo de hash SHA256** (`-hash`)
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+* **Conversão para XML** (`-xml`)
+
+  * Responsável: João Victor (Movies e Sessions) e Francisco Breno (Tickets)
+* **Filtragem por atributos** (`-filter`)
+
+  * Responsável: João Victor e Francisco Breno
+
+---
+
+### 7. Logging e Configuração
+
+* **Implementação do logger** (configuração via `config.yaml`, `configurar_logging`)
+
+  * Responsável: Francisco Breno
+* **Inserção de logs nas rotas** (INFO, DEBUG, ERROR)
+
+  * Responsável: João Victor e Francisco Breno
+
+---
+
+### 8. Testes e Validação
+
+* **Testes manuais** (casos de uso verificados)
+
+  * Responsável: João Victor e Francisco Breno
+
+---
+
+### 9. Conclusão
+
+Este projeto implementa as diversas funcionalidades retratadas na descrição do trabalho de _F1_ a _F8_. O domínio escolhido foi cinema, visando desenvolver uma aplicação que não está distante da realidade humana. Para isso, o sistema considera `Movies`, `Sessions` e `Tickets` como as três entidades principais a serem gerenciadas nesse sistema, com os dados persistindo em `CSV`, mas também com suporte para conversão para `ZIP` e `XML`.  
+
+* Link para o repositório no GitHub: https://github.com/Jaum1981/UFC-2025.1-Persistencia-Trabalho-01
+
+---
+
