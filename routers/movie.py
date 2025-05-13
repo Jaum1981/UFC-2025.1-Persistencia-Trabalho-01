@@ -4,12 +4,14 @@ from fastapi import APIRouter, HTTPException, Query
 from starlette.responses import FileResponse
 from http import HTTPStatus
 from models.models import Movie
-from typing import List
+from typing import List, Optional
 from utils.logger_config import logger
+from utils.configs import ler_config_yaml
 
 router = APIRouter()
-MOVIE_CSV_FILE = 'data/movies.csv'
-MOVIE_ZIP_FILE = 'compressed/movies.zip'
+movies_data = ler_config_yaml().get('data', {})
+MOVIE_CSV_FILE = movies_data.get('csv', {}).get('movies', 'data/movies.csv')
+MOVIE_ZIP_FILE = movies_data.get('compressed', {}).get('movies', 'compressed/movies.zip')
 
 def read_movies_csv() -> List[Movie]:
     movies: List[Movie] = []
@@ -40,66 +42,67 @@ def write_movies_csv(movies: List[Movie]) -> None:
 
 @router.get("/movies", response_model=List[Movie])
 def get_movies():
-    logger.info("Fetching all movies")
+    logger.info("[get_movies] - Fetching all movies.")
     movies = read_movies_csv()
-    logger.debug(f"{len(movies)} movies found")
+    logger.debug(f"[get_movies] - {len(movies)} movies found.")
+    logger.info("[get_movies] - Movies recovered successfully.")
     return movies
 
 @router.get("/movies/{movie_id}", response_model=Movie)
 def get_movie_by_id(movie_id: int):
-    logger.info(f"Fetching movie with ID: {movie_id}")
+    logger.info(f"[get_movie_by_id] - Fetching movie with ID: {movie_id}")
     movies = read_movies_csv()
     for movie in movies:
         if movie.id == movie_id:
-            logger.debug(f"Movie found: {movie.title}")
+            logger.info(f"[get_movie_by_id] - Movie found: {movie.title}")
             return movie
-    logger.error(f"Movie with ID {movie_id} not found")
+    logger.error(f"[get_movie_by_id] - Movie with ID {movie_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found") 
 
 @router.post("/movies", response_model=Movie, status_code=HTTPStatus.CREATED)
 def create_movie(movie: Movie):
-    logger.info(f"Creating movie: {movie.title}")
+    logger.info(f"[create_movie] - Creating movie: {movie.title}")
     movies = read_movies_csv()
     if any(m.id == movie.id for m in movies):
-        logger.error(f"Movie with ID {movie.id} already exists")
+        logger.error(f"[create_movie] - Movie with ID {movie.id} already exists")
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="Movie with this ID already exists")
     movies.append(movie)
     write_movies_csv(movies)
-    logger.debug(f"Movie created: {movie.title}")
+    logger.info(f"[create_movie] - Movie created: {movie.title}")
     return movie
 
 @router.put("/movies/{movie_id}", response_model=Movie)
 def update_movie(movie_id: int, updated_movie: Movie):
-    logger.info(f"Updating movie with ID: {movie_id}")
+    logger.info(f"[update_movie] - Updating movie with ID: {movie_id}")
     movies = read_movies_csv()
     for index, movie in enumerate(movies):
         if movie.id == movie_id:
             movies[index] = updated_movie
-            logger.debug(f"Movie updated: {updated_movie.title}")
+            logger.info(f"[update_movie] - Movie updated: {updated_movie.title}")
             if updated_movie.id != movie_id:
-                logger.error("Cannot change movie ID")
+                logger.error("[update_movie] - Cannot change movie ID")
                 raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot change movie ID")
             write_movies_csv(movies)
             return updated_movie
-    logger.error(f"Movie with ID {movie_id} not found")
+    logger.error(f"[update_movie] - Movie with ID {movie_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
 
 @router.delete("/movies/{movie_id}", status_code=HTTPStatus.NO_CONTENT)
 def delete_movie(movie_id: int):
-    logger.info(f"Deleting movie with ID: {movie_id}")
+    logger.info(f"[delete_movie] - Deleting movie with ID: {movie_id}")
     movies = read_movies_csv()
     for movie in movies:
         if movie.id == movie_id: 
             movies.remove(movie)
             write_movies_csv(movies)
-            logger.debug(f"Movie deleted: {movie.title}")
+            logger.info(f"[delete_movie] - Movie deleted: {movie.title}")
             return
-    logger.error(f"Movie with ID {movie_id} not found")
+    logger.error(f"[delete_movie] - Movie with ID {movie_id} not found")
     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
 
 @router.get("/movies-count")
 def get_movies_count():
-    logger.info("Counting all movies")
+    logger.info("[get_movies_count] - Counting all movies")
     movies = read_movies_csv()
     return  {
         "quantidade": len(movies)
@@ -107,48 +110,51 @@ def get_movies_count():
 
 @router.get("/movies-zip")
 def get_movies_zip():
-    logger.info("Creating ZIP file of movies")
+    logger.info("[get_movies_zip] - Creating ZIP file of movies")
     with zipfile.ZipFile(MOVIE_ZIP_FILE, 'w') as zipf:
         zipf.write(MOVIE_CSV_FILE, os.path.basename(MOVIE_CSV_FILE))
-        logger.debug(f"ZIP file created: {MOVIE_ZIP_FILE}")
+        logger.info(f"[get_movies_zip] - ZIP file created: {MOVIE_ZIP_FILE}")
         return FileResponse(MOVIE_ZIP_FILE, media_type='application/zip', filename=os.path.basename(MOVIE_ZIP_FILE))
     
-@router.get("/movies-per-atributes", response_model=List[Movie])
-def get_movies_by_atribute(field: str = Query(..., description="Coluna para busca (e.g. id, title, genre)"),
-                           value: str = Query(..., description="Valor a ser buscado na coluna")):
-    logger.info(f"Fetching movies by attribute: {field} with value: {value}")
+@router.get("/movies-filter", response_model=List[Movie])
+def filter_movies(
+    genre: Optional[str] = Query(None, description="Gênero do filme"),
+    director: Optional[str] = Query(None, description="Nome do diretor"),
+    min_duration: Optional[int] = Query(None, description="Duração mínima em minutos"),
+    max_duration: Optional[int] = Query(None, description="Duração máxima em minutos"),
+    release_year: Optional[int] = Query(None, description="Ano de lançamento exato"),
+    title: Optional[str] = Query(None, description="Título ou parte do título")
+):
+    logger.info("[filter_movies] - Starting search with movie filtering.")
+    logger.debug("[filter_movies] - Filtering attributes:")
+    logger.debug(f"[filter_movies] - genre: {genre}")
+    logger.debug(f"[filter_movies] - director: {director}")
+    logger.debug(f"[filter_movies] - min_duration: {min_duration}")
+    logger.debug(f"[filter_movies] - max_duration: {max_duration}")
+    logger.debug(f"[filter_movies] - release_year: {release_year}")
+    logger.debug(f"[filter_movies] - title: {title}")
     movies = read_movies_csv()
-    if field not in Movie.__annotations__:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Invalid field")
-    
-    if field == "id":
-        value = int(value)
-    elif field == "duration_minutes":
-        value = int(value)
-    elif field == "release_year":
-        value = int(value)
-    else:
-        value = str(value)  
-    filtered_movies = []
+    results: List[Movie] = []
     for movie in movies:
-        movie_value = getattr(movie, field)
-        if field == "genre":
-            if value in movie_value.split(';'):
-                filtered_movies.append(movie)
-        else:
-            if movie_value == value:
-                filtered_movies.append(movie)
-    
-    if not filtered_movies:
-        logger.error(f"No movies found with {field} = {value}")
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No movies found with the given attribute")
-    logger.debug(f"{len(filtered_movies)} movies found with {field} = {value}")
-    return filtered_movies
+        if genre is not None and genre.lower() not in [g.lower() for g in movie.genre.split(';')]:
+            continue
+        if director is not None and director.lower() not in movie.director.lower():
+            continue
+        if min_duration is not None and movie.duration_minutes < min_duration:
+            continue
+        if max_duration is not None and movie.duration_minutes > max_duration:
+            continue
+        if release_year is not None and movie.release_year != release_year:
+            continue
+        if title is not None and title.lower() not in movie.title.lower():
+            continue
+        results.append(movie)
+    return results
 
 #F6 Retornar o Hash SHA256 do Arquivo CSV
 @router.get("/movies-hash")
 def get_movies_hash():
-    logger.info("Calculating SHA256 hash of the movies CSV file")
+    logger.info("[get_movies_hash] - Calculating SHA256 hash of the movies CSV file.")
     import hashlib
     sha256_hash = hashlib.sha256()
     with open(MOVIE_CSV_FILE, "rb") as f:
@@ -161,7 +167,7 @@ def get_movies_hash():
 #F8 Converter o csv para xml
 @router.get("/movies-xml")
 def get_movies_xml():
-    logger.info("Converting movies CSV to XML")
+    logger.info("[get_movies_xml] - Converting movies CSV to XML")
     import xml.etree.ElementTree as ET
     movies = read_movies_csv()
     root = ET.Element("movies")
@@ -171,6 +177,6 @@ def get_movies_xml():
             child = ET.SubElement(movie_elem, key)
             child.text = str(value)
     tree = ET.ElementTree(root)
-    xml_file_path = 'xml_files/movies.xml'
+    xml_file_path = movies_data.get('xml', {}).get('movies', 'xml_files/movies.xml')
     tree.write(xml_file_path, encoding='utf-8', xml_declaration=True)
     return FileResponse(xml_file_path, media_type='application/xml', filename=os.path.basename(xml_file_path))
