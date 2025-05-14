@@ -7,6 +7,8 @@ from models.models import Movie
 from typing import List, Optional
 from utils.logger_config import logger
 from utils.configs import ler_config_yaml
+from .session import read_session_csv
+from controller.controller import read_session_csv
 
 router = APIRouter()
 movies_data = ler_config_yaml().get('data', {})
@@ -93,6 +95,11 @@ def delete_movie(movie_id: int):
     movies = read_movies_csv()
     for movie in movies:
         if movie.id == movie_id: 
+            has_session = read_session_csv()
+            for session in has_session:
+                if session.movie_id == str(movie_id):
+                    logger.error(f"[delete_movie] - Cannot delete movie with ID {movie_id} because it has associated sessions.")
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot delete movie with associated sessions.")
             movies.remove(movie)
             write_movies_csv(movies)
             logger.info(f"[delete_movie] - Movie deleted: {movie.title}")

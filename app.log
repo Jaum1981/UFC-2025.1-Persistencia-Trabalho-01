@@ -48,3 +48,132 @@
 2025-05-14 08:47:28,918 - INFO - [get_sessions_xml] - Converting sessions CSV to XML
 2025-05-14 08:47:45,463 - INFO - [get_movies_xml] - Converting movies CSV to XML
 2025-05-14 08:47:50,298 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 10:08:05,692 - INFO - [get_movies] - Fetching all movies.
+2025-05-14 10:08:05,693 - INFO - [get_movies] - Movies recovered successfully.
+2025-05-14 10:11:24,367 - INFO - [create_movie] - Creating movie: Shrek
+2025-05-14 10:11:24,368 - INFO - [create_movie] - Movie created: Shrek
+2025-05-14 10:12:04,655 - INFO - [get_movie_by_id] - Fetching movie with ID: 9090
+2025-05-14 10:12:04,656 - INFO - [get_movie_by_id] - Movie found: Shrek
+2025-05-14 10:12:28,943 - INFO - [update_movie] - Updating movie with ID: 9090
+2025-05-14 10:12:28,943 - INFO - [update_movie] - Movie updated: Shrek
+2025-05-14 10:12:28,943 - ERROR - [update_movie] - Cannot change movie ID
+2025-05-14 10:12:43,971 - INFO - [update_movie] - Updating movie with ID: 9090
+2025-05-14 10:12:43,973 - INFO - [update_movie] - Movie updated: Shrekk
+2025-05-14 10:12:52,221 - INFO - [update_movie] - Updating movie with ID: 9090
+2025-05-14 10:12:52,222 - INFO - [update_movie] - Movie updated: Shrek
+2025-05-14 10:12:59,413 - INFO - [get_movies_count] - Counting all movies
+2025-05-14 10:13:07,157 - INFO - [get_movies_zip] - Creating ZIP file of movies
+2025-05-14 10:13:26,152 - INFO - [get_movies_zip] - Creating ZIP file of movies
+2025-05-14 10:13:26,152 - INFO - [get_movies_zip] - ZIP file created: compressed/movies.zip
+2025-05-14 10:13:52,369 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-14 10:14:04,244 - INFO - [get_movies_hash] - Calculating SHA256 hash of the movies CSV file.
+2025-05-14 10:14:13,563 - INFO - [get_movies_xml] - Converting movies CSV to XML
+2025-05-14 10:14:23,464 - INFO - [get_sessions] - Fetching all sessions
+2025-05-14 10:14:23,464 - INFO - [get_sessions] - Sessions recovered successfully.
+2025-05-14 10:14:56,892 - INFO - [delete_movie] - Deleting movie with ID: 9090
+2025-05-14 10:14:56,893 - INFO - [delete_movie] - Movie deleted: Shrek
+2025-05-14 10:16:57,678 - INFO - [create_session] - Creating session: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 10:16:57,679 - INFO - [create_session] - Session created: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 10:17:16,188 - INFO - [get_session_by_id] - Fetching session with ID: 9090
+2025-05-14 10:17:16,189 - INFO - [get_session_by_id] - Session found: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=datetime.timezone.utc) room='Room B' available_seats=['B7', 'B8', 'B9', 'B10']
+2025-05-14 10:18:32,217 - INFO - [update_session] - Updating session with ID: 9090
+2025-05-14 10:18:32,218 - INFO - [update_session] - Session updated: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room C' available_seats=['B7;B8;B9;B10']
+2025-05-14 10:18:43,769 - INFO - [update_session] - Updating session with ID: 9090
+2025-05-14 10:18:43,770 - INFO - [update_session] - Session updated: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 10:18:52,562 - INFO - [get_sessions_count] - Counting all sessions
+2025-05-14 10:19:03,037 - INFO - [delete_session] - Deleting session with ID: 9090
+2025-05-14 10:19:03,039 - INFO - [delete_session] - Session deleted: id=9090 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=datetime.timezone.utc) room='Room B' available_seats=['B7', 'B8', 'B9', 'B10']
+2025-05-14 10:19:08,558 - INFO - [get_sessions_count] - Counting all sessions
+2025-05-14 10:19:13,876 - INFO - [get_sessions_zip] - Creating ZIP file of all sessions
+2025-05-14 10:19:23,971 - INFO - [filter_sessions] - Starting search with sessions filtering.
+2025-05-14 10:19:36,564 - INFO - [filter_sessions] - Starting search with sessions filtering.
+2025-05-14 10:19:58,308 - INFO - [get_sessions_hash - Calculating SHA256 hash of the session CSV file
+2025-05-14 10:20:06,276 - INFO - [get_sessions_xml] - Converting sessions CSV to XML
+2025-05-14 10:21:19,574 - INFO - [get_tickets] - Fetching all tickets
+2025-05-14 10:21:19,576 - INFO - [get_tickets] - Tickets recovered successfully.
+2025-05-14 10:23:27,806 - INFO - [filter_tickets] - Starting search with tickets filtering.
+2025-05-14 10:24:13,005 - INFO - [get_tickets_zip] - Creating ZIP file of tickets
+2025-05-14 10:24:13,008 - INFO - [get_tickets_zip] - ZIP file created: compressed/ticket.zip
+2025-05-14 10:25:19,543 - INFO - [create_ticket] - Creating ticket: id=9090 session_id=201 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=200.0
+2025-05-14 10:25:19,545 - INFO - [create_ticket] - Ticket created: id=9090 session_id=201 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=200.0
+2025-05-14 10:25:35,162 - INFO - [get_ticket_by_id] - Fetching ticket with ID: 9090
+2025-05-14 10:25:35,163 - INFO - [get_ticket_by_id] - Ticket found: id=9090 session_id=201 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=datetime.timezone.utc) ticket_type='inteira' price=200.0
+2025-05-14 10:25:59,333 - INFO - [update_ticket] - Updating ticket with ID: 9090
+2025-05-14 10:25:59,337 - ERROR - [update_ticket] - Cannot change ticket ID
+2025-05-14 10:26:07,589 - INFO - [update_ticket] - Updating ticket with ID: 9090
+2025-05-14 10:26:07,594 - INFO - [update_ticket] - Ticket updated: id=9090 session_id=201 client_name='Maria Oliveira' seat='A7' purchase_date=datetime.datetime(2025, 5, 9, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=20.0
+2025-05-14 10:26:38,746 - INFO - [get_tickets_count] - Counting all tickets
+2025-05-14 10:26:47,076 - INFO - [delete_ticket] - Deleting ticket with ID: 9090
+2025-05-14 10:26:47,081 - INFO - [delete_ticket] - Ticket deleted: id=9090 session_id=201 client_name='Maria Oliveira' seat='A7' purchase_date=datetime.datetime(2025, 5, 9, 14, 5, tzinfo=datetime.timezone.utc) ticket_type='inteira' price=20.0
+2025-05-14 15:34:48,347 - INFO - [get_movies_zip] - Creating ZIP file of movies
+2025-05-14 15:34:48,349 - INFO - [get_movies_zip] - ZIP file created: compressed/movies.zip
+2025-05-14 15:42:50,019 - INFO - [create_movie] - Creating movie: string
+2025-05-14 15:42:50,020 - INFO - [create_movie] - Movie created: string
+2025-05-14 15:43:15,783 - INFO - [create_session] - Creating session: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:43:15,783 - INFO - [create_session] - Session created: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:43:28,962 - INFO - [delete_movie] - Deleting movie with ID: 99
+2025-05-14 15:43:28,963 - INFO - [delete_movie] - Movie deleted: string
+2025-05-14 15:43:35,807 - INFO - [delete_movie] - Deleting movie with ID: 99
+2025-05-14 15:43:35,808 - ERROR - [delete_movie] - Movie with ID 99 not found
+2025-05-14 15:43:56,703 - INFO - [get_sessions] - Fetching all sessions
+2025-05-14 15:43:56,704 - INFO - [get_sessions] - Sessions recovered successfully.
+2025-05-14 15:46:52,040 - INFO - [create_movie] - Creating movie: string
+2025-05-14 15:46:52,042 - INFO - [create_movie] - Movie created: string
+2025-05-14 15:46:56,015 - INFO - [get_movies] - Fetching all movies.
+2025-05-14 15:46:56,016 - INFO - [get_movies] - Movies recovered successfully.
+2025-05-14 15:47:06,442 - INFO - [get_sessions] - Fetching all sessions
+2025-05-14 15:47:06,443 - INFO - [get_sessions] - Sessions recovered successfully.
+2025-05-14 15:47:31,798 - INFO - [delete_movie] - Deleting movie with ID: 99
+2025-05-14 15:47:31,798 - ERROR - [delete_movie] - Cannot delete movie with ID 99 because it has associated sessions.
+2025-05-14 15:48:23,572 - INFO - [create_ticket] - Creating ticket: id=9090 session_id=909 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=200.0
+2025-05-14 15:48:23,573 - INFO - [create_ticket] - Ticket created: id=9090 session_id=909 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=200.0
+2025-05-14 15:53:56,203 - INFO - [delete_session] - Deleting session with ID: 909
+2025-05-14 15:53:56,204 - INFO - [delete_session] - Session deleted: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=datetime.timezone.utc) room='string' available_seats=['B7', 'B8', 'B9', 'B10']
+2025-05-14 15:53:59,921 - INFO - [delete_session] - Deleting session with ID: 909
+2025-05-14 15:53:59,922 - ERROR - [delete_session] - Session with ID 909 not found
+2025-05-14 15:54:42,671 - INFO - [create_session] - Creating session: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:54:42,672 - INFO - [create_session] - Session created: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:54:51,506 - INFO - [create_ticket] - Creating ticket: id=9090 session_id=909 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=TzInfo(UTC)) ticket_type='inteira' price=200.0
+2025-05-14 15:54:51,506 - ERROR - [create_ticket] - Ticket with ID 9090 already exists
+2025-05-14 15:56:37,870 - INFO - [delete_session] - Deleting session with ID: 909
+2025-05-14 15:56:37,871 - INFO - [delete_session] - Session deleted: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=datetime.timezone.utc) room='string' available_seats=['B7', 'B8', 'B9', 'B10']
+2025-05-14 15:57:07,569 - INFO - [create_session] - Creating session: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:57:07,572 - INFO - [create_session] - Session created: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 15:57:12,216 - INFO - [delete_session] - Deleting session with ID: 909
+2025-05-14 15:57:12,217 - ERROR - [delete_session] - Cannot delete session with ID 909 because it has associated tickets.
+2025-05-14 15:57:33,952 - INFO - [delete_ticket] - Deleting ticket with ID: 9090
+2025-05-14 15:57:33,954 - INFO - [delete_ticket] - Ticket deleted: id=9090 session_id=909 client_name='Teste' seat='A10' purchase_date=datetime.datetime(2025, 5, 14, 14, 5, tzinfo=datetime.timezone.utc) ticket_type='inteira' price=200.0
+2025-05-14 15:57:52,036 - INFO - [delete_session] - Deleting session with ID: 909
+2025-05-14 15:57:52,037 - INFO - [delete_session] - Session deleted: id=909 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=datetime.timezone.utc) room='string' available_seats=['B7', 'B8', 'B9', 'B10']
+2025-05-14 15:57:57,201 - INFO - [delete_movie] - Deleting movie with ID: 99
+2025-05-14 15:57:57,202 - INFO - [delete_movie] - Movie deleted: string
+2025-05-14 16:08:00,599 - INFO - [create_session] - Creating session: id=909 movie_id='999999' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:08:00,599 - ERROR - [create_session] - Movie with ID 999999 doesn't exists
+2025-05-14 16:12:04,447 - INFO - [update_session] - Updating session with ID: 909
+2025-05-14 16:12:04,448 - ERROR - [update_session] - Session with ID 909 not found
+2025-05-14 16:13:12,744 - INFO - [create_session] - Creating session: id=909 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:13:12,745 - ERROR - [create_session] - Movie with ID 202 doesn't exists
+2025-05-14 16:14:50,447 - INFO - [create_session] - Creating session: id=909 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:14:50,448 - INFO - [create_session] - Session created: id=909 movie_id='202' start_time=datetime.datetime(2025, 5, 14, 18, 42, 55, 207000, tzinfo=TzInfo(UTC)) room='string' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:15:03,472 - INFO - [update_session] - Updating session with ID: 909
+2025-05-14 16:15:03,473 - ERROR - [create_session] - Movie with ID 202 doesn't exists
+2025-05-14 16:15:10,502 - INFO - [update_session] - Updating session with ID: 909
+2025-05-14 16:15:10,503 - ERROR - [create_session] - Movie with ID 202 doesn't exists
+2025-05-14 16:15:25,002 - INFO - [update_session] - Updating session with ID: 909
+2025-05-14 16:15:25,004 - INFO - [update_session] - Session updated: id=909 movie_id='201' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:20:07,829 - INFO - [create_movie] - Creating movie: Shrek
+2025-05-14 16:20:07,830 - INFO - [create_movie] - Movie created: Shrek
+2025-05-14 16:20:18,388 - INFO - [get_movies] - Fetching all movies.
+2025-05-14 16:20:18,388 - INFO - [get_movies] - Movies recovered successfully.
+2025-05-14 16:20:45,832 - INFO - [create_session] - Creating session: id=909 movie_id='99999' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:20:45,833 - ERROR - [create_session] - Session with ID 909 already exists
+2025-05-14 16:20:54,884 - INFO - [create_session] - Creating session: id=9009 movie_id='99999' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:20:54,885 - ERROR - [create_session] - Movie with ID 99999 doesn't exists
+2025-05-14 16:21:08,298 - INFO - [create_session] - Creating session: id=9009 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:21:08,301 - INFO - [create_session] - Session created: id=9009 movie_id='99' start_time=datetime.datetime(2025, 5, 14, 13, 14, 32, 42000, tzinfo=TzInfo(UTC)) room='Room B' available_seats=['B7;B8;B9;B10']
+2025-05-14 16:21:19,886 - INFO - [get_movies_count] - Counting all movies
+2025-05-14 16:21:29,719 - INFO - [get_movies_zip] - Creating ZIP file of movies
+2025-05-14 16:21:29,720 - INFO - [get_movies_zip] - ZIP file created: compressed/movies.zip
+2025-05-14 16:22:05,604 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-14 16:22:14,862 - INFO - [get_movies_hash] - Calculating SHA256 hash of the movies CSV file.
+2025-05-14 16:22:26,065 - INFO - [get_movies_xml] - Converting movies CSV to XML

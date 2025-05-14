@@ -4,9 +4,10 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query
 from starlette.responses import FileResponse
 from http import HTTPStatus
-from models.models import Session
+from models.models import Session, Ticket
 from typing import List, Optional
 from utils.logger_config import logger
+from controller.controller import read_movies_csv
 
 router = APIRouter()
 from utils.configs import ler_config_yaml
@@ -14,6 +15,32 @@ from utils.configs import ler_config_yaml
 sessions_data = ler_config_yaml().get('data', {})
 SESSION_CSV_FILE = sessions_data.get('csv', {}).get('session', 'data/session.csv')
 SESSION_ZIP_FILE = sessions_data.get('compressed', {}).get('session', 'compressed/session.zip')
+
+TICKET_CSV_FILE = sessions_data.get('csv', {}).get('ticket', 'data/ticket.csv')
+TICKET_ZIP_FILE = sessions_data.get('compressed', {}).get('ticket', 'compressed/ticket.zip')
+
+# Utility functions
+
+def read_tickets_csv() -> List[Ticket]:
+    tickets: List[Ticket] = []
+    if os.path.exists(TICKET_CSV_FILE):
+        with open(TICKET_CSV_FILE, mode='r', encoding='utf-8') as file:
+            next(file, None)  # ignora o header
+            for line in file:
+                id, session_id, client_name, seat, purchase_date, ticket_type, price = line.strip().split(',')
+                tickets.append(
+                    Ticket(
+                        id=int(id),
+                        session_id=int(session_id),
+                        client_name=client_name,
+                        seat=seat,
+                        purchase_date=datetime.fromisoformat(purchase_date),
+                        ticket_type=ticket_type,
+                        price=price
+                    )
+                )
+    return tickets
+
 
 # Utility functions
 
@@ -70,6 +97,10 @@ def create_session(session: Session):
     if any(s.id == session.id for s in sessions):
         logger.error(f"[create_session] - Session with ID {session.id} already exists")
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="Session with this ID already exists")
+    has_movie = read_movies_csv()
+    if all(m.id != int(session.movie_id) for m in has_movie):
+        logger.error(f"[create_session] - Movie with ID {session.movie_id} doesn't exists")
+        raise HTTPException(status_code=HTTPStatus.UNPROCESSABLE_ENTITY, detail="movie with this id doesn't exists")
     sessions.append(session)
     write_session_csv(sessions)
     logger.info(f"[create_session] - Session created: {session}")
@@ -85,6 +116,10 @@ def update_session(session_id: int, updated_session: Session):
             if updated_session.id != session_id:
                 logger.error(f"[update_session] - Cannot change session ID from {session_id} to {updated_session.id}")
                 raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot change session ID")
+            has_movie = read_movies_csv()
+            if all(m.id != int(session.movie_id) for m in has_movie):
+                logger.error(f"[create_session] - Movie with ID {session.movie_id} doesn't exists")
+                raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="movie with this id doesn't exists")
             write_session_csv(sessions)
             logger.info(f"[update_session] - Session updated: {updated_session}")
             return updated_session
@@ -97,6 +132,13 @@ def delete_session(session_id: int):
     sessions = read_session_csv()
     for session in sessions:
         if session.id == session_id:
+            has_ticket = read_tickets_csv()
+            print(session_id)
+            for ticket in has_ticket:
+                if ticket.session_id == int(session_id):
+                    print(ticket.session_id)
+                    logger.error(f"[delete_session] - Cannot delete session with ID {session_id} because it has associated tickets.")
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Cannot delete session with associated tickets.")
             sessions.remove(session)
             write_session_csv(sessions)
             logger.info(f"[delete_session] - Session deleted: {session}")
