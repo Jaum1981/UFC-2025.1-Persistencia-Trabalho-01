@@ -1,0 +1,18 @@
+logging:
+  level: "INFO"  # Nível do log: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "app.log"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+
+data:
+  csv:
+    movies: "data/movies.csv"
+    session: "data/session.csv"
+    ticket: "data/ticket.csv"
+  compressed:
+    movies: "compressed/movies.zip"
+    session: "compressed/session.zip"
+    ticket: "compressed/ticket.zip"
+  xml:
+    movies: "xml_files/movies.xml"
+    session: "xml_files/session.xml"
+    ticket: "xml_files/ticket.xml"
