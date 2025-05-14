@@ -1,0 +1,50 @@
+2025-05-13 10:47:04,646 - INFO - [get_movies] - Fetching all movies.
+2025-05-13 10:47:04,661 - INFO - [get_movies] - Movies recovered successfully.
+2025-05-13 10:47:41,085 - INFO - [delete_movie] - Deleting movie with ID: 210
+2025-05-13 10:47:41,086 - INFO - [delete_movie] - Movie deleted: Ghostlight
+2025-05-13 10:48:04,175 - INFO - [create_movie] - Creating movie: Ghostlight
+2025-05-13 10:48:04,176 - INFO - [create_movie] - Movie created: Ghostlight
+2025-05-13 10:48:21,204 - INFO - [get_movie_by_id] - Fetching movie with ID: 210
+2025-05-13 10:48:21,205 - INFO - [get_movie_by_id] - Movie found: Ghostlight
+2025-05-13 10:48:44,513 - INFO - [update_movie] - Updating movie with ID: 210
+2025-05-13 10:48:44,513 - INFO - [update_movie] - Movie updated: Ghostlight 2
+2025-05-13 10:48:49,168 - INFO - [get_movie_by_id] - Fetching movie with ID: 210
+2025-05-13 10:48:49,169 - INFO - [get_movie_by_id] - Movie found: Ghostlight 2
+2025-05-13 10:48:56,376 - INFO - [update_movie] - Updating movie with ID: 210
+2025-05-13 10:48:56,377 - INFO - [update_movie] - Movie updated: Ghostlight
+2025-05-13 10:49:06,313 - INFO - [get_movies_count] - Counting all movies
+2025-05-13 10:49:14,867 - INFO - [get_movies_zip] - Creating ZIP file of movies
+2025-05-13 10:49:14,869 - INFO - [get_movies_zip] - ZIP file created: compressed/movies.zip
+2025-05-13 10:51:04,581 - INFO - [get_movies_hash] - Calculating SHA256 hash of the movies CSV file.
+2025-05-13 10:51:11,498 - INFO - [get_movies_xml] - Converting movies CSV to XML
+2025-05-13 10:52:51,246 - INFO - [get_sessions] - Fetching all sessions
+2025-05-13 10:52:51,257 - INFO - [get_sessions] - Sessions recovered successfully.
+2025-05-13 10:54:58,851 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:12,455 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:24,521 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:29,963 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:38,020 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:42,302 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:50,983 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:55:59,460 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:56:06,243 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:56:11,192 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:56:15,330 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-13 10:56:37,512 - INFO - [filter_movies] - Starting search with movie filtering.
+2025-05-14 08:37:19,109 - INFO - [get_movies] - Fetching all movies.
+2025-05-14 08:37:19,110 - INFO - [get_movies] - Movies recovered successfully.
+2025-05-14 08:37:43,977 - INFO - [get_sessions_count] - Counting all sessions
+2025-05-14 08:37:56,842 - INFO - [get_sessions_xml] - Converting sessions CSV to XML
+2025-05-14 08:38:03,039 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:39:15,109 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:39:59,517 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:41:05,213 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:41:45,736 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:42:57,052 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:44:57,870 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
+2025-05-14 08:45:42,553 - INFO - [get_movies_xml] - Converting movies CSV to XML
+2025-05-14 08:45:45,412 - INFO - [get_movies_xml] - Converting movies CSV to XML
+2025-05-14 08:46:22,978 - INFO - [get_sessions_xml] - Converting sessions CSV to XML
+2025-05-14 08:47:28,918 - INFO - [get_sessions_xml] - Converting sessions CSV to XML
+2025-05-14 08:47:45,463 - INFO - [get_movies_xml] - Converting movies CSV to XML
+2025-05-14 08:47:50,298 - INFO - [get_tickets_xml] - Converting tickets CSV to XML
